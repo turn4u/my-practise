@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>upsidedown</title>
+	<style>
+	* { padding:0; margin: 0;box-sizing:border-box; }
+	body {
+		font-family: 'Helvetica Neue', Arial, sans-serif;
+	}
+	#cube-con {
+	    width: 200px;
+	    height: 200px;
+	    border: 1px solid green;
+	    margin: 0 auto;
+	    padding-top: 50px;
+	    position: relative;
+	    perspective: 700px;
+
+	}
+	#cube {
+	    width: 100%;
+	    height: 100%;
+	    position: absolute;
+	    transform-style: preserve-3d;
+	}
+	#cube figure {
+		width: 100%;
+	    height: 100%;
+	    display: block;
+	    position: absolute;
+	    border: 2px solid black;
+	    color: white;
+	    text-align: center;
+	    font-weight: bold;
+	    font-size: 120px;
+	    line-height: 196px;
+	}
+	#cube .front    { 
+		transform: rotateX( 90deg );
+		background: hsla( 240, 100%, 50%, 0.5 )
+	}
+	#cube .bottom { 
+		transform: rotateX( -90deg );
+		background: hsla( 300, 100%, 50%, 0.5 )
+	}
+	#cube .top  { 
+		transform: rotateY( 0deg );
+		background: hsla( 0, 100%, 50%, 0.5 )
+	}
+	#cube {
+		transition: transform 1s
+	}
+	.btn {
+		width: 50px; 
+		height: 25px;
+		border-radius: 2px;
+		cursor: pointer; 
+		border: 1px solid #666;
+	}
+	</style>
+</head>
+<body>
+<section id="cube-con">
+  <div id="cube">
+    <figure class="front">1</figure>
+    <figure class="top">2</figure>
+    <figure class="bottom">3</figure>
+  </div>
+</section>
+<div>
+	<button class="btn" onclick="_rotate('left');">左转</button>
+	<button class="btn" onclick="_rotate('right');">右转</button>
+	<button class="btn" onclick="_rotate('top');">上转</button>
+	<button class="btn" onclick="_rotate('bottom');">下转</button>
+</div>
+<script>
+var flipper = document.getElementById("cube");
+function _rotate(direction) {
+	switch(direction) {
+		case 'left' :
+			flipper.style.transform = "rotateY(-90deg)";
+			break;
+		case 'right' :
+			flipper.style.transform = "rotateY(90deg)";
+			break;
+		case 'top' :
+			flipper.style.transform = "rotateX(-90deg)";
+			break;
+		case 'bottom' :
+			flipper.style.transform = "rotateX(90deg)";
+			break;
+	}
+};
+
+</script>
+</body>
+</html>
