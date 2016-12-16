@@ -140,8 +140,8 @@
     <div style="text-align: center; font-size: 12px;margin-bottom: 10px">每次学习都是未知探索的开始，许个愿吧少年 !</div>
     <div style="text-align: center;font-size: 12px;color:#666">turn4u.github.io</div>
     <script>
-		var WINDOW_WIDTH = document.body.offsetWidth;
-		var WINDOW_HEIGHT = document.body.offsetHeight;
+		var WINDOW_WIDTH = window.innerWidth;
+		var WINDOW_HEIGHT = window.innerHeight;
 		var canvas,context;
 		var num = 200;
 		var stars = [];
@@ -151,8 +151,13 @@
 		var meteors = [];
 		
 		window.onresize = function() {
-			WINDOW_WIDTH = document.body.offsetWidth;
-			WINDOW_HEIGHT = document.body.offsetHeight;
+			WINDOW_WIDTH = window.innerWidth;
+			WINDOW_HEIGHT = window.innerHeight;
+			canvas = document.getElementById('canvas');
+			canvas.width = WINDOW_WIDTH;
+			canvas.height = WINDOW_HEIGHT;
+
+			context = canvas.getContext('2d');
 		}
 
 		window.onload = function(){
