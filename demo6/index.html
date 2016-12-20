@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Gomoku</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
+  <style>
+  	* {padding: 0; margin: 0;box-sizing:border-box;}
+    #app {
+    	text-align: center;
+    }
+    .chess {
+      margin-bottom: 30px;
+      font-size: 0;
+    }
+    i {
+      position: relative;
+      display: inline-block;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      cursor: pointer;
+      text-align: left;
+    }
+    i.r,
+    i.r::before,
+    i.r::after {
+      background-color: #f00;
+      border-color: #f00;
+    }
+    i.b,
+    i.b::before,
+    i.b::after {
+      background-color: #000;
+      border-color: #000;
+    }
+        /* - 横线 */
+    i::before,
+    i::after {
+      content: ' ';
+      position: absolute;
+      top: 20px;
+      width: 40px;
+      height: 0;
+      border-top: 1px solid #333;
+    }
+    /* | 竖线 */
+    i::after {
+      top: 0;
+      right: 20px;
+      width: 0;
+      height: 40px;
+      border-top: 0 none;
+      border-right: 1px solid #333;
+    }
+
+    .btn {
+    	padding: 10px 30px;
+    	cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <!-- <h1>五子棋</h1> -->
+    <div class="chess">
+    </div>
+    <button class="btn" onClick='_init();'>重新开局</button>
+    <button class="btn" onClick='_undo();'>悔棋</button>
+  </div>
+  <script type="text/javascript" src="jquery.js"></script>
+  <script type="text/javascript">
+  	var _steps = [];
+  	var _tableWidth = 15;
+  	var _player = 'b';
+  	var _last = [];
+
+  	_init();
+
+  	function _init() {
+  		var _html = "";
+	  	for(var i =0; i<_tableWidth; i++) {
+	  		for(var j =0; j<_tableWidth; j++) {
+	  			_html += "<i data-value='0"+(j+1)+"0"+(i+1)+"' onClick='tick(this,"+(j+1)+","+(i+1)+");'></i>";
+	  			if (j == _tableWidth-1) {
+	  				_html += "<br />";
+	  			}
+	  		}
+	  	}
+
+	  	$('.chess').html(_html);
+  	}
+
+  	function tick(obj,x,y) {
+  		$(obj).addClass(_player);
+
+  		_steps[_cover(x)+_cover(y)] = _player;
+  		_last.push(_cover(x)+_cover(y));
+
+  		if (check(x, y)) {
+  			alert('win');
+  		}
+
+  		_player = _player == 'r' ? 'b' : 'r';;
+  	}
+
+  	function check(x, y) {
+  		var count = 0;
+  		var curStep = _steps[_cover(x)+_cover(y)];
+
+  		
+
+  		//横向
+  		var _x = (x - 5 > 0) ? (x-5) : 1; 
+
+  		for(var i=0; i<10; i++) {
+  			if (curStep == _steps[_cover(_x+i)+_cover(y)]) {
+  				count += 1;
+  			} else {
+  				count = 0;
+  			}
+  			if (count == 5) {
+  				return true;
+  			}
+  		}
+
+  		//纵向
+  		count = 0;
+  		var _y = (y - 5 > 0) ? (y-5) : 1; 
+
+  		for(var i=0; i<10; i++) {
+  			if (curStep == _steps[_cover(x)+_cover(_y+i)]) {
+  				count += 1;
+  			} else {
+  				count = 0;
+  			}
+
+  			if (count == 5) {
+  				return true;
+  			}
+  		}
+
+  		// '\'向
+  		count = 0;
+
+  		_x = x - 5;
+        _y = y - 5;
+
+        for (var i=0; i<10; i++) {
+			if (curStep == _steps[this._cover(_x)+this._cover(_y)])
+				count++;
+			else
+				count = 0;
+			_y++;
+			_x++;
+
+			if (count == 5){
+				return true;
+			}
+		}
+
+		// '/'向
+		count = 0;
+
+		_x = x + 5;
+		_y = y - 5;
+
+		for (var i=0; i< 10; i++) {
+			if (curStep == _steps[this._cover(_x)+this._cover(_y)])
+				count++;
+			else
+				count = 0;
+			_y++;
+			_x--;
+
+			if (count == 5){
+				return true;
+			}
+		}
+
+  	}
+
+  	//悔棋
+  	function _undo() {
+  		_player = _player == 'b' ? 'r' : 'b';
+  		_last_key = _last.pop();
+  		_steps[_last_key] = 'undefined';
+  		$('i[data-value="'+_last_key+'"]').removeClass(_player);
+  	}
+
+  	function _cover(num) {
+  		return '0'+num+'';
+  	}
+  </script>
+</body>
+</html>
